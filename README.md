@@ -100,6 +100,43 @@ The model is evaluated using the following metrics:
 - **Accuracy**: The percentage of correctly classified messages.
 - **Classification Report**: Precision, recall, F1-score for both ham and spam classes.
 - **Precision-Recall Curve**: A curve that plots precision vs. recall, with the area under the curve (AUC) used to measure performance.
+## Model Performance
+ **Accuracy: 97.85%**
+The model achieved high accuracy in classifying both ham and spam messages. Below are the detailed performance metrics:
+
+Classification Report:
+
+              precision    recall  f1-score   support
+
+         ham       0.99      0.99      0.99       966
+        spam       0.91      0.93      0.92       149
+
+    accuracy                           0.98      1115
+   macro avg       0.95      0.96      0.95      1115
+weighted avg       0.98      0.98      0.98      1115
+
+**Precision:** The proportion of positive identifications that were actually correct.
+
+**Ham:** 99% of the predictions for ham were correct.
+
+**Spam:** 91% of the predictions for spam were correct.
+
+**Recall:** The proportion of actual positives that were correctly identified.
+
+**Ham:** 99% of the actual ham messages were correctly identified.
+
+**Spam:** 93% of the actual spam messages were correctly identified.
+
+**F1-Score:** The harmonic mean of precision and recall, providing a balanced measure of the model’s accuracy.
+
+**Ham:** 99% F1-score.
+
+**Spam:** 92% F1-score.
+
+## Key Takeaways:
+Ham messages: The model has near-perfect precision and recall for ham messages (99% each), indicating it effectively classifies legitimate messages.
+
+Spam messages: The model shows strong performance for spam classification, but there is room for improvement, particularly in spam precision (91%).
 
 ## How to Use
 
@@ -147,6 +184,9 @@ The classification report includes:
 ### 3. **Precision-Recall Curve**:
 A precision-recall curve is plotted, and the **AUC (Area Under the Curve)** is calculated to measure the overall performance of the classifier. A higher AUC indicates better performance.
 
+![download](https://github.com/user-attachments/assets/6f32aa2b-c5b5-41a2-841f-ab54a36702a7)
+
+
 ## Future Improvements
 
 - **Improving Spam Detection**: Experiment with different algorithms (e.g., Random Forest, Naive Bayes, or deep learning models) to improve the performance of spam classification.
@@ -162,10 +202,6 @@ A precision-recall curve is plotted, and the **AUC (Area Under the Curve)** is c
   - [Matplotlib](https://matplotlib.org/) for plotting the precision-recall curve.
 - The dataset used is from the **SMSSpamCollection**, a popular dataset for SMS spam classification.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
 
 ---
 
