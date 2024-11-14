@@ -1,104 +1,173 @@
-# Simple-Text-Classification-Spam-vs.-Non-Spam
-This project is a simple implementation of an SMS Spam Classifier using Naive Bayes. The goal is to classify SMS messages as either "ham" (non-spam) or "spam." This is achieved using text preprocessing and machine learning with the Naive Bayes algorithm.
-## Project Objectives
-Build a simple but effective model to classify SMS messages as spam or non-spam.
-Use basic Natural Language Processing (NLP) techniques to convert text messages into machine-readable numerical features.
-Implement and evaluate a Naive Bayes classifier using the preprocessed data to achieve high accuracy with minimal complexity.
+
+# Spam Detection using Machine Learning
+
+## Overview
+
+This project implements a spam detection system that classifies text messages as either "ham" (non-spam) or "spam" using machine learning. The model is trained using the **Linear Support Vector Classifier (SVC)** and evaluates performance using various metrics like accuracy, classification report, and precision-recall curve. The dataset used is the widely-known "SMSSpamCollection" dataset, which contains SMS messages labeled as either spam or ham.
+
+## Features
+
+- **Text Preprocessing**: Removes noise from messages such as numbers, URLs, and punctuation.
+- **Feature Extraction**: Uses **TF-IDF (Term Frequency-Inverse Document Frequency)** vectorizer to convert text into numerical features.
+- **Spam Classification**: Classifies a message as "ham" (non-spam) or "spam" using **LinearSVC**.
+- **Model Tuning**: Uses **GridSearchCV** to fine-tune the model's hyperparameters (e.g., the regularization parameter `C`).
+- **Performance Evaluation**: Reports the model's accuracy, classification report (precision, recall, f1-score), and visualizes performance with a **precision-recall curve**.
+
+## Installation
+
+### Prerequisites
+
+Ensure that you have **Python 3.7 or higher** installed. The required libraries are listed in the `requirements.txt` file.
+
+To install the necessary dependencies, run:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Dependencies
+
+The following libraries are required to run the project:
+
+- `scikit-learn` - For machine learning algorithms and metrics.
+- `pandas` - For data manipulation.
+- `nltk` - For text preprocessing (e.g., stopword removal, lemmatization).
+- `matplotlib` - For plotting the precision-recall curve.
+
+If you don't have them installed, you can uncomment the following line in the code to install the libraries:
+
+```bash
+# !pip install scikit-learn pandas nltk matplotlib
+```
+
 ## Dataset
-The dataset used in this project is the SMS Spam Collection dataset from the UCI Machine Learning Repository. It contains a set of labeled SMS messages classified as either "ham" or "spam."
 
--Number of samples: 5,574
--Number of classes: 2 (ham and spam)
--Format: The dataset consists of two columns:
--label: Label indicating if the message is ham (non-spam) or spam.
--message: The actual SMS message text.
-link for data : https://archive.ics.uci.edu/dataset/228/sms+spam+collection
+The model is trained on the **SMSSpamCollection**, a dataset of SMS messages. The dataset contains labeled text messages:
 
+- **Ham (non-spam)**: Legitimate messages (e.g., "Hey, how are you?").
+- **Spam**: Unsolicited or irrelevant messages (e.g., "Congratulations! You've won a free iPhone!").
 
-## Prerequisites
-The following Python packages are required to run this project:
+### Dataset Format
 
--pandas: For data manipulation and analysis.
+The dataset consists of two columns:
 
--scikit-learn: For building and evaluating the model.
+- **Label**: Either `ham` (non-spam) or `spam`.
+- **Message**: The text message to classify.
 
--nltk: For natural language processing, specifically for handling stopwords.
+Example:
+```
+ham    Hello, I hope you're doing well!
+spam   You have won a lottery! Click here to claim your prize!
+```
 
--Install these packages with:
+## Model Overview
 
+The model follows the steps below:
 
-pip install pandas scikit-learn nltk
+1. **Text Preprocessing**: 
+   - Remove numbers, punctuation, and URLs.
+   - Tokenize and lemmatize words.
+   - Remove stopwords (commonly used words like "the", "is", etc.).
 
-## Conclusion 
-After running the simple Spam vs. Non-Spam Classification project, we can draw conclusions on several key aspects: model performance, the effectiveness of text preprocessing, and how machine learning can be applied to text data. Let's break down the key points based on the process and the results from the evaluation.
+2. **Feature Extraction**: 
+   - Convert the text into numerical features using **TF-IDF Vectorizer**. It captures both word frequency and the importance of the words in the document.
 
-## 1. Model Performance
-The Naive Bayes classifier is a very simple but effective model for text classification tasks, especially when dealing with text data that has a clear and relatively simple structure, such as spam messages. It is based on applying Bayes' Theorem, assuming that the features (words) are conditionally independent, which works quite well for this type of problem.
+3. **Model Training**:
+   - **LinearSVC** (Support Vector Machine) is used as the classification model.
+   - **GridSearchCV** is used for hyperparameter tuning (e.g., selecting the best value of the regularization parameter `C`).
 
-**Accuracy**: The accuracy metric provides a straightforward way to understand how well the model is doing overall. Accuracy tells us the proportion of correct predictions (both spam and non-spam) out of the total number of predictions made. For instance, if the accuracy is 90%, it means 90% of the messages in the test set were correctly classified as spam or non-spam.
+4. **Model Evaluation**:
+   - The model is evaluated based on accuracy, precision, recall, F1-score, and AUC (area under the curve) of the precision-recall curve.
 
-**Classification Report**: The classification report goes beyond accuracy and includes important metrics like:
+## Code Walkthrough
 
-**Precision**: The ratio of correctly predicted positive instances (spam) out of all instances predicted as spam. Precision tells us how many of the spam messages the model identified were actually spam.
+### 1. **Text Preprocessing**:
+The preprocessing function performs the following operations:
+- Removes numbers from the text.
+- Removes URLs (e.g., `http://example.com`).
+- Removes punctuation.
+- Tokenizes the message and removes stopwords.
+- Lemmatizes each word to its base form (e.g., "running" becomes "run").
 
-**Recall**: The ratio of correctly predicted positive instances (spam) out of all actual positive instances (all the true spam messages). Recall tells us how many of the actual spam messages the model was able to identify.
+### 2. **Feature Extraction**:
+We use **TF-IDF Vectorizer** to convert text messages into a matrix of numerical features. The vectorizer uses bigrams and extracts up to 2000 features from the text.
 
-**F1-Score**: The harmonic mean of precision and recall, which balances both metrics. This score gives us a better understanding of the model's ability to handle both types of errors (false positives and false negatives).
-If we have high precision and recall for the spam class, it means the model is effectively distinguishing spam from non-spam without mistakenly classifying too many legitimate messages as spam.
+### 3. **Model Training**:
+The **LinearSVC** algorithm is used to classify messages. GridSearchCV is applied to find the optimal value of the hyperparameter `C` (regularization parameter).
 
-![Screenshot 2024-11-14 221234](https://github.com/user-attachments/assets/5ee7eb09-c562-415f-95e0-250f6c105164)
+### 4. **Model Evaluation**:
+The model is evaluated using the following metrics:
+- **Accuracy**: The percentage of correctly classified messages.
+- **Classification Report**: Precision, recall, F1-score for both ham and spam classes.
+- **Precision-Recall Curve**: A curve that plots precision vs. recall, with the area under the curve (AUC) used to measure performance.
 
+## How to Use
 
-## 2. Text Preprocessing and Feature Extraction
-In the project, the text data underwent a basic preprocessing step, where:
+### 1. **Run the Script**:
+To train the model and make predictions, simply run the Python script:
 
--**Tokenization**: The text was broken down into individual words (tokens).
+```bash
+python spam_detection.py
+```
 
--**Stop Words Removal**: Common but meaningless words like "the", "is", etc., were removed because they don’t contribute much to distinguishing spam from non-spam.
+This will:
+- Load the dataset.
+- Preprocess the text messages.
+- Extract features using TF-IDF.
+- Split the data into training and testing sets.
+- Train a **LinearSVC** model.
+- Evaluate the model's performance.
 
--**Bag of Words**: This technique turned the text into a vector of word counts, allowing the model to learn from the frequency of each word in the messages.
+### 2. **Predict New Messages**:
+To classify a new message as ham or spam, you can modify the script to accept input or use the trained model directly:
 
-Why is preprocessing important?
+```python
+# Assuming the model is saved as `best_model`
+new_message = "Congratulations! You've won a free iPhone!"
+processed_message = preprocess_text(new_message)
+features = vectorizer.transform([processed_message])
+prediction = best_model.predict(features)
+print(f"Prediction: {'Spam' if prediction[0] == 1 else 'Ham'}")
+```
 
--Noise Reduction: Removing unnecessary words (like stop words) helps reduce noise in the data and allows the model to focus on the more important words.
+### 3. **Retrain the Model**:
+If you want to retrain the model with the latest dataset or change the hyperparameters, you can modify the script and rerun it.
 
--Text to Numerical Representation: Machine learning models can’t directly work with text, so converting text into numerical features (like word counts) allows us to apply models like Naive Bayes.
+## Performance Evaluation
 
--Using CountVectorizer helped generate this numerical representation in the form of a term-document matrix.
+### 1. **Accuracy**:
+The model achieves an accuracy of approximately **97.85%** on the test set, which means it correctly classifies 97.85% of the messages.
 
-## 3. Effectiveness of Naive Bayes for Text Classification
-Naive Bayes is particularly well-suited for text classification tasks because:
+### 2. **Classification Report**:
+The classification report includes:
+- **Precision**: How many of the predicted spam messages are actually spam.
+- **Recall**: How many of the actual spam messages are correctly identified.
+- **F1-score**: The harmonic mean of precision and recall, providing a balanced evaluation.
 
--**Scalability**: It performs well on large datasets because it makes relatively few assumptions, is computationally efficient, and is easy to implement.
-Works Well for High-Dimensional Data: Text data typically has high dimensionality (lots of unique words), and Naive Bayes tends to work effectively even in such scenarios, as it assumes independence between features (words), which simplifies the learning process.
-However, Naive Bayes assumes word independence, which is often not true in real-world text data. Despite this, it performs surprisingly well because many of the correlations between words don’t significantly affect the performance in simple classification tasks like spam detection.
+### 3. **Precision-Recall Curve**:
+A precision-recall curve is plotted, and the **AUC (Area Under the Curve)** is calculated to measure the overall performance of the classifier. A higher AUC indicates better performance.
 
-## 4. Potential Improvements and Extensions
-Although Naive Bayes performs well for this simple task, there are many ways the model could be improved for real-world applications:
+## Future Improvements
 
--**Data Augmentation**: Adding more messages to the dataset would help improve the model's performance, especially on more varied types of text.
+- **Improving Spam Detection**: Experiment with different algorithms (e.g., Random Forest, Naive Bayes, or deep learning models) to improve the performance of spam classification.
+- **Hyperparameter Optimization**: Use advanced techniques like RandomizedSearchCV or Bayesian Optimization for better hyperparameter tuning.
+- **Handle Imbalanced Dataset**: The dataset has an imbalance (more ham than spam). Future improvements could focus on handling this imbalance through techniques like oversampling or using different evaluation metrics.
 
--**Feature Engineering**: Instead of just using word counts, other feature extraction techniques like TF-IDF (Term Frequency-Inverse Document Frequency) can be used to give more weight to words that are more informative across documents, rather than just frequent.
+## Acknowledgements
 
--**Advanced Models**: While Naive Bayes is a great starting point, more advanced models like Support Vector Machines (SVM), Logistic Regression, or deep learning-based models (such as Recurrent Neural Networks or Transformers) could improve classification performance, especially for more complex datasets.
--**Cross-validation**: Instead of just splitting the data once into training and testing sets, using k-fold cross-validation would provide a more reliable estimate of the model’s performance by testing it on different subsets of the data.
-
-## 5. Real-World Applications
-Spam detection is just one example of how this simple text classification model can be used. Some other real-world applications of text classification include:
-
--**Email Filtering**: Classifying emails as spam or non-spam automatically.
-
--**Customer Support**: Automatically categorizing support tickets into different topics (e.g., billing issues, technical problems).
-
--**Content Moderation**: Identifying offensive or harmful content in user-generated texts.
-
--**Sentiment Analysis**: Classifying reviews or comments into positive, negative, or neutral categories.
+- This project utilizes the following open-source libraries:
+  - [Scikit-learn](https://scikit-learn.org/) for machine learning algorithms and metrics.
+  - [Pandas](https://pandas.pydata.org/) for data manipulation and processing.
+  - [NLTK](https://www.nltk.org/) for text processing tasks.
+  - [Matplotlib](https://matplotlib.org/) for plotting the precision-recall curve.
+- The dataset used is from the **SMSSpamCollection**, a popular dataset for SMS spam classification.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more information.
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
 
-
+---
 
 
 
